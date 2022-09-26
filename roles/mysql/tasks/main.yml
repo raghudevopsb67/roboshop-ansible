@@ -69,7 +69,7 @@
 
 - name: Print out
   debug:
-    msg: "{{out}}"
+    msg: "{{out | b64decode}}"
 
 
 
