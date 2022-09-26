@@ -69,7 +69,7 @@
 
 - name: Print out
   debug:
-    msg: "{{out['content'] | b64decode | regex_findall('temporary password.*') |splitext }}"
+    msg: "{{out['content'] | b64decode | regex_findall('temporary password.*') |split(' ') }}"
 
 
 
