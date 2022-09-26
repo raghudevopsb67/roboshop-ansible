@@ -24,10 +24,15 @@
     disable_gpg_check: yes
 
 - name: Install Redis 6.2
+  ansible.builtin.shell: dnf module enable redis:remi-6.2
+
+- name: Install Redis
   ansible.builtin.dnf:
     name: redis
-    enablerepo: remi-6.2
     state: installed
+    disable_gpg_check: yes
+
+
 
 
 
