@@ -52,10 +52,10 @@
   ansible.builtin.shell: dnf module disable mysql -y
 
 - name: Install MySQL Server Server and Python3 Dependency packages
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: "{{item}}"
     state: installed
-  item:
+  loop:
     - mysql-community-devel
     - mysql-community-server
     - gcc
