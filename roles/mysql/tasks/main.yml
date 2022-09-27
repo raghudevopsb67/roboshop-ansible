@@ -96,10 +96,10 @@
   when: mysql_conn_status is failed
 
 - name: Check MySQL Password Validate Plugin
-  community.mysql.mysql_info:
+  community.mysql.mysql_query:
+    query: 'show plugins'
     login_user: root
     login_password: "{{ROBOSHOP_MYSQL_PASSWORD}}"
-    filter: 'show plugins'
   ignore_errors: yes
   register: plugins_status
 
