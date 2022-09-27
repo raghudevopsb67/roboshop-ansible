@@ -27,7 +27,7 @@
     name: "{{item}}"
     state: installed
   loop:
-    - https://github.com/rabbitmq/erlang-rpm/releases/download/v23.2.6/erlang-23.2.6-1.el7.x86_64.rpm
+    - https://github.com/rabbitmq/erlang-rpm/releases/download/v25.1/erlang-25.1-1.el8.x86_64.rpm
     - rabbitmq-server
 
 - name: Start RabbitMQ Server
