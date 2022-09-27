@@ -85,9 +85,11 @@
   ignore_errors: yes
   register: mysql_conn_status
 
-- name: print status
-  debug:
-    msg: "{{mysql_conn_status}}"
+- name: Copy SQL File to reset password
+  ansible.builtin.copy:
+    src: reset-root-pass.sql
+    dest: /tmp/reset-root-pass.sql
+  when: mysql_conn_status is failed 
 
 - name: Print out
   debug:
