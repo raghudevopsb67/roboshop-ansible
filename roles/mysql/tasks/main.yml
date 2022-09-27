@@ -1,32 +1,4 @@
-#LOG_FILE=/tmp/mysql
-#source common.sh
-#
-#if [ -z "${ROBOSHOP_MYSQL_PASSWORD}" ]; then
-#echo -e "\e[31m ROBOSHOP_MYSQL_PASSWORD env variable is needed\e[0m"
-#exit 1
-#fi
-#
 
-#
-#
-#DEFAULT_PASSWORD=$(grep 'A temporary password' /var/log/mysqld.log | awk '{print $NF}')
-#
-#echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('${ROBOSHOP_MYSQL_PASSWORD}');
-#FLUSH PRIVILEGES;" >/tmp/root-pass.sql
-#
-#echo "show databases;" |mysql -uroot -p${ROBOSHOP_MYSQL_PASSWORD} &>>$LOG_FILE
-#if [ $? -ne 0 ]; then
-#echo "Change the default root password"
-#mysql --connect-expired-password -uroot -p"${DEFAULT_PASSWORD}" </tmp/root-pass.sql &>>$LOG_FILE
-#StatusCheck $?
-#fi
-#
-#echo 'show plugins'| mysql -uroot -p${ROBOSHOP_MYSQL_PASSWORD} 2>/dev/null | grep validate_password &>>$LOG_FILE
-#if [ $? -eq 0 ]; then
-#echo "Uninstall Password Validation Plugin"
-#echo "uninstall plugin validate_password;" | mysql -uroot -p${ROBOSHOP_MYSQL_PASSWORD} &>>$LOG_FILE
-#StatusCheck $?
-#fi
 #
 #echo "Download Schema"
 #curl -s -L -o /tmp/mysql.zip "https://github.com/roboshop-devops-project/mysql/archive/main.zip" &>>$LOG_FILE
@@ -103,13 +75,27 @@
   ignore_errors: yes
   register: plugins_status
 
-- name: print
-  debug:
-    msg: "{{plugins_status | regex_findall('validate_password') | length}}"
-
 - name: Uninstall Password Validate Plugin
   community.mysql.mysql_query:
     query: 'uninstall plugin validate_password;'
     login_user: root
     login_password: "{{ROBOSHOP_MYSQL_PASSWORD}}"
   when: plugins_status | regex_findall('validate_password') | length > 0
+
+- name: Downloading Schema Files
+  ansible.builtin.unarchive:
+    src: https://github.com/roboshop-devops-project/mysql/archive/main.zip
+    dest: /tmp
+    remote_src: yes
+
+- name: Load Schema
+  community.mysql.mysql_db:
+    state: import
+    name: all
+    target: /tmp/mysql-main/shipping.sql
+    login_user: root
+    login_password: "{{ROBOSHOP_MYSQL_PASSWORD}}"
+
+
+
+
