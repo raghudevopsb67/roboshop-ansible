@@ -52,7 +52,7 @@
   ansible.builtin.shell: dnf module disable mysql -y
 
 - name: Install MySQL Server Server and Python3 Dependency packages
-  ansible.builtin.dnf:
+  ansible.builtin.yum:
     name: "{{item}}"
     state: installed
   item:
