@@ -72,6 +72,11 @@
     src: /var/log/mysqld.log
   register: out
 
+- name: Install mysqlclient pip3
+  ansible.builtin.pip:
+    name: mysqlclient
+    executable: pip3
+
 - name: Check MySQL Credentials
   community.mysql.mysql_info:
     login_user: root
@@ -82,15 +87,4 @@
   debug:
     msg: "{{ out['content'] | b64decode | regex_findall('temporary password.*') |join(' ')  | split(' ') | last }}"
 
-#    31  sudo yum list all | grep mysql -i
-#    32  yum install mysql-community-devel
-#    33  pip3 install mysql_config
-#    34  pip3 install mysqlclient
-#    35  sudo yum install gcc -y
-#    36  pip3 install mysqlclient
-#    37  yum list all | grep python -i
-#    38  yum list all | grep python -i  | grep devel
-#    39  yum install python36-devel.x86_64 -y
-#    40  pip3 install mysqlclient
-#    41  ansible-pull -i localhost, -U https://github.com/raghudevopsb67/roboshop-ansible.git roboshop.yml -e ROBOSHOP_MYSQL_PASSWORD=RoboShop@1 -e ROLE_NAME=mysql
-#    42  history
+
