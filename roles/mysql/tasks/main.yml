@@ -85,6 +85,10 @@
   ignore_errors: yes
   register: mysql_conn_status
 
+- name: print status
+  debug:
+    msg: "{{mysql_conn_status}}"
+
 - name: Print out
   debug:
     msg: "{{ out['content'] | b64decode | regex_findall('temporary password.*') |join(' ')  | split(' ') | last }}"
