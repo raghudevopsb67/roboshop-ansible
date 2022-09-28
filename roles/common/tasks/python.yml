@@ -18,6 +18,15 @@
   debug:
     msg: User ID =  "{{appuser.uid}}" , Group ID = {{appuser.group}}
 
+- name: Change UID & GID in App configuration
+  ansible.builtin.lineinfile:
+    path: /home/roboshop/{{COMPONENT}}/{{COMPONENT}}.ini
+    regexp: '^{{item.name}}'
+    line: uid = {{item.id}}
+  loop:
+    - { name: "uid", id: "{{appuser.uid}}"}
+    - { name: "gid", id: "{{appuser.group}}"}
+
 - name: Import SystemD tasks
   ansible.builtin.import_tasks: systemd.yml
 
