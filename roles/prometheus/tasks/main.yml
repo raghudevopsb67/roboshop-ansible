@@ -1,0 +1,5 @@
+- name: Copy Prometheus Configuration
+  ansible.builtin.template:
+    src: promtheus.yml
+    dest: /opt/prometheus/prometheus.yml
+
