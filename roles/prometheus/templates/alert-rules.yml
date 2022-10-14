@@ -1,0 +1,18 @@
+groups:
+  - name: Alerts
+    rules:
+      - alert: InstanceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance Down - [{{ $labels.instance}}]"
+          description: "Instance Down - [{{ $labels.instance}}]"
+      - alert: MemoryHighUsage
+        expr: node_memory_used_percent > 80
+        labels:
+          severity: critical
+        annotations:
+          summary: "High Memory Usage - [{{ $labels.Name}}]"
+          description: "High Memory Usage - [{{ $labels.Name}}]\n Private IP Address = [{{ $labels.Name}}]"
