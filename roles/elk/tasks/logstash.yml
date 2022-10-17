@@ -3,4 +3,18 @@
     src: logstash.conf
     dest: /etc/logstash/conf.d/logstash.conf
 
+- name: Start Logstash Service
+  ansible.builtin.systemd:
+    name: logstash
+    state: restarted
+
+- name: Wait for Logstash Service to Start
+  ansible.builtin.wait_for:
+    host: 0.0.0.0
+    port: 5044
+    delay: 30
+    timeout: 10
+    
+
+
 
