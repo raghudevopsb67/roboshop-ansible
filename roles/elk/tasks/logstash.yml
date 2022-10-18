@@ -9,18 +9,7 @@
     state: restarted
 
 - name: Wait for Logstash Service to Start
-  ansible.builtin.wait_for:
-    host: logstash.roboshop.internal
-    port: 5044
-    delay: 30
-    timeout: 60
-    active_connection_states: [ "LISTEN" ]
-  register: out
-  ignore_errors: true
-
-- name: debug
-  debug:
-    msg: "{{out}}"
+  ansible.builtin.shell: sleep 60 && netstat -lntp | grep 5044
 
 
 
