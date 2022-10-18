@@ -11,4 +11,11 @@
     name: elk
     tasks_from: rsyslog
 
+- name: Install Botocore and boto3
+  ansible.builtin.pip:
+    name:
+      - botocore
+      - boto3
+    executable: pip3.9
+
 
