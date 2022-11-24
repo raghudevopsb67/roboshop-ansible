@@ -3,11 +3,6 @@
     name: roboshop
   register: appuser
 
-- name: Clean UP old App Content
-  ansible.builtin.file:
-    path: /home/roboshop/{{COMPONENT}}
-    state: absent
-
 ## Commented this to move towards standard process of downloading the content from artifact manager rather than downloading from git repo
 #- name: Downloading Application Content
 #  ansible.builtin.unarchive:
@@ -17,7 +12,7 @@
 
 - name: Create Application Directory
   ansible.builtin.file:
-    path: /home/roboshop/{{COMPONENT}}
+    path: /home/roboshop/{{COMPONENT}}-tmp
     state: directory
     owner: roboshop
     group: roboshop
@@ -25,9 +20,18 @@
 - name: Downloading Application Content
   ansible.builtin.unarchive:
     src: http://{{NEXUS_USER}}:{{NEXUS_PASS}}@nexus.roboshop.internal:8081/repository/{{COMPONENT}}/{{COMPONENT}}-{{APP_VERSION}}.zip
-    dest: /home/roboshop/{{COMPONENT}}
+    dest: /home/roboshop/{{COMPONENT}}-tmp
     remote_src: yes
   become_user: roboshop
+
+- name: Clean UP old App Content
+  ansible.builtin.file:
+    path: /home/roboshop/{{COMPONENT}}
+    state: absent
+
+## this approach has been taken to avoid application downtime if the download file is high and also download speed is low.
+- name: Rename Dir
+  ansible.builtin.shell: mv /home/roboshop/{{COMPONENT}}-tmp /home/roboshop/{{COMPONENT}}
 
 ## Commented this to move towards standard process of downloading the content from artifact manager rather than downloading from git repo
 #- name: Copy Extracted App Content
