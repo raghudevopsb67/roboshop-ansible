@@ -41,3 +41,4 @@
         - { name: "roboshop.prod.user.APP_VERSION", value: "1.0.0"}
         - { name: "roboshop.prod.payment.APP_VERSION", value: "1.0.0"}
         - { name: "roboshop.prod.shipping.APP_VERSION", value: "1.0.0"}
+        - { name: "roboshop.prod.frontend.APP_VERSION", value: "1.0.0"}
